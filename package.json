@@ -1,0 +1,35 @@
+{
+  "name": "corti-ai-agent",
+  "version": "1.0.0",
+  "description": "Patient de-identification pipeline using Corti Agentic Framework + ZK proofs",
+  "main": "dist/orchestrator.js",
+  "scripts": {
+    "build": "tsc",
+    "phase1": "npx ts-node src/corti.ts",
+    "phase2": "npx ts-node src/pdfReader.ts",
+    "deidentify": "npx ts-node src/deidentifier.ts",
+    "reidentify": "npx ts-node src/reidentify.ts",
+    "zk:prove": "npx ts-node src/zkRunner.ts",
+    "run": "npx ts-node src/orchestrator.ts",
+    "mcp": "npx ts-node src/mcpServer.ts"
+  },
+  "dependencies": {
+    "@corti/sdk": "^3.1.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@types/express": "^5.0.6",
+    "circomlib": "^2.0.5",
+    "compromise": "^14.15.1",
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "mammoth": "^1.8.0",
+    "node-fetch": "^3.3.2",
+    "pdf-parse": "^1.1.1",
+    "snarkjs": "^0.7.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "@types/pdf-parse": "^1.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}

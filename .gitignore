@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env.local
+.agent-state.json
+output/
+src/circuits/build/
+*.enc
+patient_key.b64

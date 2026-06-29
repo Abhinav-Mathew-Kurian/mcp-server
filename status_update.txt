@@ -1,0 +1,182 @@
+CORTI ZK DE-IDENTIFICATION AGENT — STATUS UPDATE
+Date: 29 June 2026
+Prepared by: Abhinav
+─────────────────────────────────────────────────────────────
+
+SUMMARY
+───────
+Today we completed a major milestone: the Corti ZK De-identification Agent
+is now fully operational and connected to the Corti console UI via a live
+MCP (Model Context Protocol) server. The pipeline runs end-to-end — from
+raw clinical notes to anonymized records, structured facts, and
+cryptographically verified zero-knowledge proofs — all triggered directly
+from the Corti agent interface.
+
+All 7 clinical notes across cardiology, gastroenterology, endocrinology,
+oncology, and neurology passed with verified ZK proofs and zero PHI leakage,
+including notes with non-Western names, hyphenated surnames, secondary
+contacts, markdown-formatted inputs, and complex lab notation.
+
+
+WHAT WE BUILT & FIXED TODAY
+─────────────────────────────
+
+1. MCP SERVER — CORTI CONSOLE INTEGRATION
+   Built and deployed a custom MCP server (port 3456) that exposes the
+   de-identification pipeline as callable tools. The Corti console agent
+   connects to this server via the "Add Custom Expert" feature using the
+   streamable_http transport. The server is publicly accessible via ngrok
+   and has been verified working end-to-end with the Corti UI agent.
+
+   Tools exposed:
+   - run_pipeline     — Full pipeline: de-identify + extract facts + ZK proof
+   - deidentify_only  — Redaction check without ZK step
+   - extract_facts    — Structured fact extraction only
+
+   Note on Corti A2A / Direct Expert API: Corti's documentation confirms
+   that Multi-Agent Composition (A2A) and Direct Expert Calls are both
+   "coming soon" and not yet available. The MCP "Bring Your Own Expert"
+   path is the only live custom integration method — which is exactly
+   what we built. When A2A ships, plugging in is trivial with no rework.
+
+2. UTF-8 ENCODING FIXES
+   Resolved mojibake encoding issues where special characters were arriving
+   corrupted from the Corti console (e.g. °C showing as Â°C, µmol as Âµmol,
+   m² as mÂ²). Implemented a smart fixMojibake() function that protects
+   special characters as placeholder tokens before the encoding correction
+   and restores them cleanly afterwards.
+
+3. SPECIAL CHARACTER PRESERVATION
+   - Em dash (—) and en dash (–): Fixed — were being dropped entirely.
+     Now correctly preserved in clinical text.
+   - Multiplication sign (×): Fixed ordering conflict where the × mojibake
+     byte sequence was being consumed by the em dash handler first.
+     Now renders correctly in lab values (e.g. 16.2 × 10⁹/L).
+   - Superscript ⁹ (10⁹/L): Fixed partial mojibake pattern to handle
+     the case where the Corti console strips a middle byte before sending.
+
+4. PHI DETECTION — FALSE POSITIVE FIXES
+   - "Past Medical History": The word "Medical" was incorrectly being
+     redacted because it appeared in a facility name (Swedish Medical Center)
+     and was split into components by the NER engine. Fixed by expanding the
+     common-words exclusion list with generic institution words.
+   - Medical scoring eponyms: City names used in clinical grading systems
+     (e.g. "Tokyo Grade III", "Glasgow Coma Scale", "Ottawa Rules") were
+     being incorrectly tagged as PHI location data. Fixed by adding a
+     medical eponyms blocklist to the NER pass.
+   - Family relationship words: Words like "sister", "wife", "husband"
+     were being redacted when NER tagged "sister Lara Khoury" as a single
+     person entity and then split and registered "sister" as a known value.
+     Fixed by filtering relationship words from NER output and component
+     splitting, and by moving the sets to module level for consistency.
+   - CT scan false address match: The street address regex used the /i
+     (case-insensitive) flag, causing "CT" (computed tomography) to match
+     "Ct" (Court abbreviation) and greedily consume entire imaging lines
+     (e.g. "4.2 cm spiculated mass... CT chest/abdomen/pelvis"). Fixed by
+     removing the /i flag — real street types are properly capitalised.
+
+5. PHI DETECTION — MISSED PHI FIXES
+   - First name leak: Standalone first names (e.g. "Priya" from patient
+     "Priya Anand Sharma") were surviving redaction when NER only tagged
+     the surname. Fixed by splitting multi-part detected names into
+     individual components and registering each.
+   - Footer date leak: Dates in signed footer lines (e.g. "Date: 29 June
+     2026") were not being caught. Fixed by adding a labeled-field regex
+     targeting dates that follow a "Date:" prefix.
+   - Facility Contact footer: "Facility Contact:" lines were not matched
+     by the existing "Facility:" regex. Fixed by updating the pattern to
+     handle optional label suffixes (Facility Contact:, Facility Name:, etc.)
+   - Markdown bold marker stripping: When notes are formatted in a rich-text
+     editor (e.g. "**Patient:** Amara Osei-Bonsu"), the Patient: regex
+     was capturing " Amara Osei-Bonsu" with a leading space (because the
+     lookbehind matched zero trailing spaces). The consistency pass then
+     searched for " amara osei-bonsu" (with space), which never matched
+     the plain name in the body (preceded by a newline). Fixed by:
+       a) Stripping markdown bold/italic markers before PHI detection
+       b) Trimming leading/trailing whitespace from all regex span values
+          and adjusting span start/end indices accordingly
+   - Non-Western name components missed by NER: When NER returns empty
+     results for non-Western names (e.g. "Amara Osei-Bonsu", "Kofi Osei"),
+     component splitting only ran on NER output and never saw the name.
+     Fixed by moving component expansion to detectAndReplace(), running
+     it on ALL layer1+layer2 known values after both layers are computed.
+     Now "Osei" from "Amara Osei-Bonsu" correctly catches "Kofi Osei".
+   - Secondary contact names: Names following relationship words (daughter,
+     son, wife, husband, sister, brother, etc.) were missed when NER didn't
+     recognise the name. Fixed by adding a dedicated regex:
+     names after relationship-word + whitespace are always captured.
+
+6. ICD-10 CHAPTER CLASSIFICATION — TWO FIXES
+   Fix A — Stroke misclassification: "Acute ischaemic stroke" was mapping
+   to Chapter 6 (Nervous System) instead of Chapter 9 (Circulatory). Fixed
+   by moving stroke-related keywords (stroke, cerebral infarction, MCA
+   occlusion, thrombolysis, alteplase) into Chapter 9.
+
+   Fix B — Primary diagnosis priority: The ICD matching algorithm was
+   iterating chapters first and diagnoses second, causing a secondary
+   comorbidity (e.g. Asthma) to beat the primary diagnosis (e.g. DKA)
+   if its chapter ranked higher. Rewrote to iterate diagnoses first so
+   the primary (first-listed) diagnosis always determines the chapter.
+   Confirmed: DKA → Chapter 4 (Endocrine), NSCLC → Chapter 2 (Neoplasms),
+   cholangitis → Chapter 11 (Digestive), stroke → Chapter 9 (Circulatory).
+
+
+PIPELINE — CURRENT STATE
+─────────────────────────
+The full pipeline for every clinical note now produces:
+
+  ✅ Anonymized clinical note    — all PHI replaced with codenames
+  ✅ Structured clinical facts   — age band, sex, diagnoses, vitals, meds
+  ✅ ZK proof (Groth16/BN128)    — cryptographically verified
+  ✅ Correct ICD-10 chapter      — primary diagnosis always drives chapter
+  ✅ Encrypted PHI map           — AES-256-GCM, recoverable with patient key
+  ✅ Clean special characters    — °C, µmol/L, m², ×, ⁹, —, – all correct
+  ✅ Markdown input support      — notes from rich-text editors handled cleanly
+  ✅ Non-Western names           — hyphenated surnames and NER-unknown names caught
+  ✅ Secondary contacts          — family members named in body text redacted
+  ✅ Medical terms preserved     — GOLD Stage II, KRAS G12C, Tokyo Grade, etc. safe
+
+
+CLINICAL NOTES TESTED TODAY
+─────────────────────────────
+  1. Marcus Brennan     — STEMI, primary PCI             (Ch 9 — Circulatory)
+  2. Diane Hartwell     — Heart failure exacerbation      (Ch 9 — Circulatory)
+  3. Priya Sharma       — SLE / hypertensive emergency    (Ch 9 — Circulatory)
+  4. Thomas Gallagher   — Acute ischaemic stroke, MCA     (Ch 9 — Circulatory)
+  5. Fatima Al-Rashidi  — Acute cholangitis, Tokyo III    (Ch 11 — Digestive)
+  6. Nour Khoury        — Severe DKA, new T1DM            (Ch 4 — Endocrine)
+  7. Amara Osei-Bonsu   — Stage IIIA NSCLC, squamous      (Ch 2 — Neoplasms)
+
+All 7 notes passed with verified ZK proofs and zero PHI leakage.
+Final note (Amara Osei-Bonsu) confirmed 11/11 checks clean including
+hyphenated name, non-Western name components, markdown formatting, and
+imaging text integrity.
+
+
+CORTI CONSOLE INTEGRATION — HOW IT WORKS
+──────────────────────────────────────────
+The Corti console agent is connected to our pipeline as a custom expert
+via MCP. When a clinical note is pasted into the console:
+
+  1. The Corti UI agent calls our MCP server's run_pipeline tool
+  2. The pipeline de-identifies the note (HIPAA Safe Harbor, rule-based)
+  3. Corti's own LLM agent extracts structured clinical facts
+  4. A Groth16 ZK proof is generated and verified locally
+  5. The console returns the full bundle: anonymized note + facts + proof
+
+The integration is working excellently — response times are fast, the
+anonymized output is clean, facts are accurately extracted, and the ZK
+proof is verified on every single run.
+
+
+NEXT STEPS (SUGGESTED)
+───────────────────────
+  - Batch processing endpoint for multiple notes in one request
+  - Persistent PHI map storage with audit trail
+  - Dashboard / reporting view for proof verification history
+  - Automated regression tests covering all 7 clinical scenarios
+  - A2A agent-to-agent wiring once Corti ships that feature (zero rework
+    needed — just point the A2A call at the existing MCP endpoint)
+
+─────────────────────────────────────────────────────────────
+End of Status Update
