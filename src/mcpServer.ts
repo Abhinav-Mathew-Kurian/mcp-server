@@ -2,18 +2,38 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as http from 'http';
 import * as crypto from 'crypto';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { z } from 'zod';
 import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { ZipArchive } = require('archiver') as { ZipArchive: new (opts?: object) => NodeJS.ReadableStream & { pipe: (dest: NodeJS.WritableStream) => void; directory: (dirpath: string, destpath: string) => void; finalize: () => void } };
+import multer from 'multer';
 
 import { deidentify } from './deidentifier';
 import { generateProof } from './zkRunner';
 import { loadConfig } from './config';
+import { runBatch, BatchResult } from './batchProcessor';
+import { parseFileToText } from './fileParser';
 
 const PORT = parseInt(process.env.MCP_PORT ?? '3456', 10);
+
+// ── In-memory job store ───────────────────────────────────────────────────────
+const jobs = new Map<string, { status: 'running' | 'done' | 'failed'; result?: BatchResult; error?: string; startedAt: string }>();
+
+// ── Multer — memory storage, 20MB/file, 20 files max ─────────────────────────
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 20 * 1024 * 1024, files: 20 },
+  fileFilter: (_req, file, cb) => {
+    const allowed = ['.pdf', '.docx', '.txt', '.md'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowed.includes(ext)) cb(null, true);
+    else cb(new Error(`Unsupported file type: ${ext}. Allowed: ${allowed.join(' ')}`));
+  },
+});
 
 // ── UTF-8 mojibake fix ────────────────────────────────────────────────────────
 // Corti console sends text via MCP as Latin-1 decoded strings.
@@ -269,9 +289,18 @@ function buildMcpServer(): McpServer {
 // ── Express HTTP Server ───────────────────────────────────────────────────────
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
-// Each POST to /mcp gets its own stateless transport instance
+// CORS — allow frontend to call this server
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') { res.sendStatus(204); return; }
+  next();
+});
+
+// ── MCP endpoint — Corti and any AI agent talks here ─────────────────────────
 app.all('/mcp', async (req: express.Request, res: express.Response) => {
   const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
   const mcpServer = buildMcpServer();
@@ -279,22 +308,143 @@ app.all('/mcp', async (req: express.Request, res: express.Response) => {
   await transport.handleRequest(req as unknown as http.IncomingMessage, res as unknown as http.ServerResponse, req.body);
 });
 
-app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', server: 'corti-zk-pipeline', version: '1.0.0' });
+// ── Health check ──────────────────────────────────────────────────────────────
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({ status: 'ok', server: 'corti-zk-pipeline', version: '1.0.0', timestamp: new Date().toISOString() });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+// ── POST /api/upload — upload PDF/DOCX/TXT/MD files and run batch ─────────────
+app.post('/api/upload', upload.array('files'), async (req: Request, res: Response) => {
+  const files = req.files as Express.Multer.File[];
+  if (!files || files.length === 0) { res.status(400).json({ error: 'No files uploaded' }); return; }
+
+  const tmpDir = path.join(process.cwd(), 'output', '.tmp_uploads');
+  fs.mkdirSync(tmpDir, { recursive: true });
+
+  const notes: Array<{ id: string; text: string }> = [];
+  const parseErrors: string[] = [];
+
+  for (const file of files) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const tmpPath = path.join(tmpDir, `${crypto.randomBytes(6).toString('hex')}${ext}`);
+    try {
+      fs.writeFileSync(tmpPath, file.buffer);
+      const text = await parseFileToText(tmpPath);
+      const id = file.originalname.replace(/\.[^.]+$/, '').replace(/\s+/g, '_');
+      notes.push({ id, text });
+    } catch (err) {
+      parseErrors.push(`${file.originalname}: ${(err as Error).message}`);
+    } finally {
+      if (fs.existsSync(tmpPath)) fs.unlinkSync(tmpPath);
+    }
+  }
+
+  if (notes.length === 0) { res.status(400).json({ error: 'All files failed to parse', details: parseErrors }); return; }
+
+  const jobId = crypto.randomBytes(8).toString('hex');
+  jobs.set(jobId, { status: 'running', startedAt: new Date().toISOString() });
+
+  (async () => {
+    try {
+      const result = await runBatch(notes, {});
+      jobs.set(jobId, { status: 'done', result, startedAt: jobs.get(jobId)!.startedAt });
+    } catch (err) {
+      jobs.set(jobId, { status: 'failed', error: (err as Error).message, startedAt: jobs.get(jobId)!.startedAt });
+    }
+  })();
+
+  res.status(202).json({ jobId, status: 'running', filesAccepted: notes.length, filesRejected: parseErrors, message: 'Batch started — poll /api/batch/:jobId' });
+});
+
+// ── POST /api/batch — submit text notes as JSON ───────────────────────────────
+app.post('/api/batch', async (req: Request, res: Response) => {
+  const { notes, options } = req.body as { notes: Array<{ id: string; text: string }>; options?: { concurrency?: number; skipZk?: boolean } };
+
+  if (!Array.isArray(notes) || notes.length === 0) { res.status(400).json({ error: 'notes array is required and must not be empty' }); return; }
+  if (notes.length > 50) { res.status(400).json({ error: 'Maximum 50 notes per batch' }); return; }
+  for (const n of notes) {
+    if (!n.id || !n.text) { res.status(400).json({ error: 'Each note must have id and text fields' }); return; }
+  }
+
+  const jobId = crypto.randomBytes(8).toString('hex');
+  jobs.set(jobId, { status: 'running', startedAt: new Date().toISOString() });
+
+  (async () => {
+    try {
+      const result = await runBatch(notes, options ?? {});
+      jobs.set(jobId, { status: 'done', result, startedAt: jobs.get(jobId)!.startedAt });
+    } catch (err) {
+      jobs.set(jobId, { status: 'failed', error: (err as Error).message, startedAt: jobs.get(jobId)!.startedAt });
+    }
+  })();
+
+  res.status(202).json({ jobId, status: 'running', message: 'Batch started — poll /api/batch/:jobId' });
+});
+
+// ── GET /api/batch/:jobId — poll job status ───────────────────────────────────
+app.get('/api/batch/:jobId', (req: Request, res: Response) => {
+  const job = jobs.get(req.params.jobId as string);
+  if (!job) { res.status(404).json({ error: 'Job not found' }); return; }
+  if (job.status === 'running') { res.json({ jobId: req.params.jobId, status: 'running', startedAt: job.startedAt }); return; }
+  if (job.status === 'failed') { res.status(500).json({ jobId: req.params.jobId, status: 'failed', error: job.error }); return; }
+
+  const summary = { ...job.result, results: job.result!.results.map(r => ({ ...r, anonymizedText: undefined })) };
+  res.json({ jobId: req.params.jobId, status: 'done', startedAt: job.startedAt, result: summary });
+});
+
+// ── GET /api/batch/:jobId/note/:noteId — full note result ─────────────────────
+app.get('/api/batch/:jobId/note/:noteId', (req: Request, res: Response) => {
+  const job = jobs.get(req.params.jobId as string);
+  if (!job || job.status !== 'done') { res.status(404).json({ error: 'Job not found or not yet complete' }); return; }
+  const note = job.result!.results.find(r => r.id === (req.params.noteId as string));
+  if (!note) { res.status(404).json({ error: 'Note ID not found in this batch' }); return; }
+  res.json(note);
+});
+
+// ── GET /api/batch/:jobId/download — ZIP of all output files ─────────────────
+app.get('/api/batch/:jobId/download', (req: Request, res: Response) => {
+  const job = jobs.get(req.params.jobId as string);
+  if (!job || job.status !== 'done') { res.status(404).json({ error: 'Job not found or not yet complete' }); return; }
+  const batchDir = job.result!.batchDir;
+  if (!fs.existsSync(batchDir)) { res.status(404).json({ error: 'Output directory not found' }); return; }
+
+  res.setHeader('Content-Type', 'application/zip');
+  res.setHeader('Content-Disposition', `attachment; filename="${job.result!.batchId}.zip"`);
+  const archive = new ZipArchive({ zlib: { level: 6 } });
+  archive.pipe(res);
+  archive.directory(batchDir, job.result!.batchId);
+  archive.finalize();
+});
+
+// ── GET /api/jobs — list all jobs ─────────────────────────────────────────────
+app.get('/api/jobs', (_req: Request, res: Response) => {
+  const list = Array.from(jobs.entries()).map(([id, job]) => ({
+    jobId: id, status: job.status, startedAt: job.startedAt,
+    totalNotes: job.result?.totalNotes, succeeded: job.result?.succeeded, failed: job.result?.failed,
+  }));
+  res.json(list.reverse());
+});
+
+const server = http.createServer(app);
+server.listen(PORT, () => {
   console.log(`\n╔══════════════════════════════════════════════════════╗`);
-  console.log(`║      Corti ZK Pipeline — MCP Server                 ║`);
+  console.log(`║      Corti ZK Pipeline — Single Server               ║`);
   console.log(`╚══════════════════════════════════════════════════════╝`);
-  console.log(`\n  Local URL  : http://localhost:${PORT}/mcp`);
+  console.log(`\n  Port       : ${PORT}`);
+  console.log(`  MCP (Corti): http://localhost:${PORT}/mcp`);
+  console.log(`  REST (UI)  : http://localhost:${PORT}/api/*`);
   console.log(`  Health     : http://localhost:${PORT}/health`);
-  console.log(`\n  Tools exposed:`);
+  console.log(`\n  MCP Tools:`);
   console.log(`    run_pipeline     — full de-id + ZK proof`);
   console.log(`    deidentify_only  — redaction check only`);
   console.log(`    get_run_result   — retrieve previous run`);
-  console.log(`\n  To expose publicly for Corti console:`);
-  console.log(`    ngrok http ${PORT}`);
-  console.log(`    Then use the ngrok HTTPS URL + /mcp in the console UI`);
-  console.log(`\n  Waiting for requests...\n`);
+  console.log(`\n  REST Endpoints:`);
+  console.log(`    POST /api/upload            — PDF/DOCX/TXT file upload`);
+  console.log(`    POST /api/batch             — JSON text notes`);
+  console.log(`    GET  /api/batch/:id         — poll job status`);
+  console.log(`    GET  /api/batch/:id/note/:n — full note result`);
+  console.log(`    GET  /api/batch/:id/download— ZIP download`);
+  console.log(`    GET  /api/jobs              — list all jobs`);
+  console.log(`\n  ngrok http ${PORT}  → paste URL in Corti console\n`);
 });
+server.on('error', (err) => { console.error('[Server] Error:', err.message); });

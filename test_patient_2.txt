@@ -1,0 +1,147 @@
+CLINICAL NOTE — FICTITIOUS PATIENT DATA (FOR TESTING ONLY)
+============================================================
+
+Patient:          Gabriela Reyes-Montoya
+Date of Birth:    21 July 1989
+MRN:              8834712
+SSN:              634-28-5510
+Address:          217 Sunflower Drive, Houston, TX 77003
+Phone:            (713) 994-6628
+Email:            g.reyesmontoya89@outlook.com
+Referring Physician: Dr. Carlos Espinoza-Vega, NPI 7723041985
+Facility:         Memorial Hermann Hospital, Houston
+
+Visit Date:       22 June 2026
+Reason for Visit: Breakthrough tonic-clonic seizure — known epilepsy, query non-compliance vs. breakthrough.
+
+------------------------------------------------------------
+HISTORY OF PRESENT ILLNESS
+------------------------------------------------------------
+
+Gabriela Reyes-Montoya is a 36-year-old female with a known history of juvenile
+myoclonic epilepsy (JME) presenting via ambulance following a witnessed tonic-clonic
+seizure lasting approximately 90 seconds at her workplace (Houston Downtown Office,
+Texas Commerce Tower). She had no aura and was post-ictal for approximately 20 minutes.
+She denies tongue biting or urinary incontinence. Her husband Roberto Montoya
+(contact: 713-445-8812) was contacted and is en route. Her mother Lucia Reyes
+(home: 713-994-6628) also notified. She is 14 weeks pregnant (G2P1). She had
+missed two doses of Levetiracetam this week due to nausea.
+
+Last seizure prior to today: 11 March 2024 (18 months seizure-free until today).
+Neurologist: Dr. Carlos Espinoza-Vega (clinic: 713-667-2200).
+
+------------------------------------------------------------
+PAST MEDICAL HISTORY
+------------------------------------------------------------
+
+- Juvenile myoclonic epilepsy (diagnosed age 17, on Levetiracetam since 2007)
+- Anxiety disorder (GAD, on Sertraline — note: Sertraline continued in pregnancy)
+- G2P1 — 14 weeks gestation (planned pregnancy, obstetric care at Texas Women's Hospital)
+- Prior febrile seizure (age 3, no recurrence until JME diagnosis)
+
+------------------------------------------------------------
+CURRENT MEDICATIONS
+------------------------------------------------------------
+
+- Levetiracetam 1000mg twice daily (AED — first line for JME in pregnancy)
+- Sertraline 50mg once daily (anxiety — continued per psychiatrist advice)
+- Folic acid 5mg once daily (pregnancy — high-dose due to AED use)
+- Vitamin D 1000 IU once daily
+
+------------------------------------------------------------
+ALLERGIES
+------------------------------------------------------------
+
+Valproate (teratogenic — contraindicated in pregnancy, documented allergy flag),
+Penicillin (urticaria)
+
+------------------------------------------------------------
+VITAL SIGNS (POST-ICTAL)
+------------------------------------------------------------
+
+BP:           122/78 mmHg
+HR:           104 bpm (sinus tachycardia — post-ictal)
+RR:           16 breaths/min
+SpO2:         98% on room air
+Temperature:  37.1°C
+Weight:       63 kg
+Height:       164 cm
+BMI:          23.4 kg/m²
+GCS:          15/15 (fully recovered at time of assessment)
+
+------------------------------------------------------------
+LABS
+------------------------------------------------------------
+
+Hb:              112 g/L (mild anaemia — pregnancy related)
+WBC:             11.8 × 10⁹/L (mildly elevated — physiological in pregnancy)
+Platelets:       288 × 10⁹/L
+Levetiracetam level: 18 µmol/L (subtherapeutic — therapeutic range 35–110 µmol/L)
+Na:              138 mmol/L
+K:               3.6 mmol/L
+Glucose:         5.8 mmol/L
+CRP:             4 mg/L (normal)
+Creatinine:      62 µmol/L (normal — reduced in pregnancy)
+LFTs:            Normal
+Beta-hCG:        Consistent with 14 weeks gestation
+Urine dipstick:  No protein, no glucose, no blood
+
+------------------------------------------------------------
+OBSTETRIC ASSESSMENT
+------------------------------------------------------------
+
+Foetal heart rate: 152 bpm (Doppler — normal for gestational age).
+No uterine contractions noted.
+Obstetrics registrar (Dr. Ana Lima, pager 4421) notified — bedside review requested.
+
+------------------------------------------------------------
+EEG (HISTORICAL — 2022)
+------------------------------------------------------------
+
+Generalised 3.5–4 Hz polyspike-wave discharges maximal frontally — consistent with JME.
+No focal abnormality.
+
+------------------------------------------------------------
+IMAGING
+------------------------------------------------------------
+
+CT head (non-contrast — ALARA protocol, pregnancy shielded):
+  No intracranial haemorrhage. No space-occupying lesion. No midline shift.
+  Ventricles normal. No acute abnormality identified.
+
+MRI brain (2022, Dr. Carlos Espinoza-Vega report): Normal — no structural epileptic focus.
+
+------------------------------------------------------------
+ASSESSMENT
+------------------------------------------------------------
+
+Breakthrough tonic-clonic seizure in known JME — most likely dose-related (missed
+doses confirmed by subtherapeutic Levetiracetam level 18 µmol/L).
+14 weeks gestation — foetal wellbeing confirmed on Doppler, no obstetric concerns.
+Anxiety disorder (GAD) — ongoing, Sertraline continued.
+Anaemia of pregnancy — Hb 112 g/L, monitor, iron studies pending.
+
+------------------------------------------------------------
+PLAN
+------------------------------------------------------------
+
+1. Oral Levetiracetam dose: take missed doses now (1000mg) — resume regular schedule.
+2. Uptitrate Levetiracetam to 1250mg twice daily — subtherapeutic level confirmed.
+   Re-check level in 2 weeks.
+3. Neurology outpatient follow-up — Dr. Carlos Espinoza-Vega within 1 week.
+   Call clinic: 713-667-2200 to arrange urgent appointment.
+4. Obstetric review — Dr. Ana Lima to assess foetal wellbeing and document in
+   obstetric notes at Texas Women's Hospital.
+5. Driving advice: inform DVLA equivalent — seizure today resets seizure-free period.
+   Roberto Montoya counselled — patient must not drive for minimum 12 months from today.
+6. Seizure first aid education — given to Roberto Montoya and Lucia Reyes.
+7. Avoid identified triggers: sleep deprivation, alcohol, missed doses.
+8. Iron studies to follow up anaemia — refer to obstetric team.
+9. Mental health: confirm Sertraline review with psychiatrist at next appointment.
+10. Patient ID wristband: 8834712.
+
+------------------------------------------------------------
+
+Signed:           Dr. James Whitfield, Senior ED Registrar
+Date:             22 June 2026
+Facility Contact: Memorial Hermann Hospital, 6411 Fannin Street, Houston TX 77030

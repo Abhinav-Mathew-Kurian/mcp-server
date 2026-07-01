@@ -1,0 +1,161 @@
+CLINICAL NOTE — FICTITIOUS PATIENT DATA (FOR TESTING ONLY)
+============================================================
+
+Patient:          Tariq Olamide Adeyemi
+Date of Birth:    08 February 2001
+MRN:              9920384
+SSN:              741-55-2263
+Address:          14 Elmwood Avenue, Chicago, IL 60611
+Phone:            (312) 774-5509
+Email:            tariq.adeyemi01@icloud.com
+Referring Physician: Dr. Priya Subramaniam, NPI 8841760293
+Facility:         Northwestern Memorial Hospital, Chicago
+
+Visit Date:       27 June 2026
+Reason for Visit: Fever, rigors, productive cough — community-acquired pneumonia vs. opportunistic infection. Background of newly diagnosed HIV.
+
+------------------------------------------------------------
+HISTORY OF PRESENT ILLNESS
+------------------------------------------------------------
+
+Tariq Olamide Adeyemi is a 25-year-old male presenting with a 5-day history of
+high-grade fever (Tmax 39.8°C at home), rigors, productive cough with yellow-green
+sputum, pleuritic right-sided chest pain, and progressive exertional dyspnoea. He
+was diagnosed with HIV infection 6 weeks ago (CD4 count 112 cells/µL at diagnosis —
+not yet on ART at time of presentation). He has not commenced antiretroviral therapy
+as he was awaiting an ID clinic appointment. His sister Zainab Adeyemi (contact:
+312-990-4473) brought him to the ED and is his emergency contact. His uncle
+Emmanuel Adeyemi (home: 773-554-8821) was also notified.
+
+He is a non-smoker, drinks socially. Nigerian-British background. No recent travel.
+No known TB contacts. No prior hospitalisations. HIV transmission route: MSM.
+
+HIV Clinic follow-up was booked with Dr. Priya Subramaniam (clinic: 312-695-4440)
+for 04 July 2026 — patient did not attend prior to this admission.
+
+------------------------------------------------------------
+PAST MEDICAL HISTORY
+------------------------------------------------------------
+
+- HIV infection (newly diagnosed 14 May 2026 — CD4 112 cells/µL, VL 88,400 copies/mL)
+- No prior AIDS-defining illnesses documented
+- No prior opportunistic infections
+- Childhood asthma (resolved, no current treatment)
+
+------------------------------------------------------------
+CURRENT MEDICATIONS
+------------------------------------------------------------
+
+- None (ART not yet commenced — awaiting ID clinic)
+- Paracetamol 1g PRN (self-medicating for fever)
+
+------------------------------------------------------------
+ALLERGIES
+------------------------------------------------------------
+
+Trimethoprim-Sulfamethoxazole (TMP-SMX) — rash (documented at HIV diagnosis review)
+
+------------------------------------------------------------
+VITAL SIGNS
+------------------------------------------------------------
+
+BP:           108/64 mmHg (borderline hypotensive)
+HR:           118 bpm (sinus tachycardia)
+RR:           26 breaths/min (tachypnoeic)
+SpO2:         88% on room air → 94% on 4L nasal cannula
+Temperature:  39.6°C
+Weight:       66 kg
+Height:       179 cm
+BMI:          20.6 kg/m²
+CURB-65 Score: 2 (tachypnoea + urea elevated) — moderate severity CAP
+
+------------------------------------------------------------
+LABS
+------------------------------------------------------------
+
+Hb:               104 g/L (normocytic anaemia — HIV-related)
+WBC:              3.2 × 10⁹/L (leucopaenia — CD4 depletion)
+Neutrophils:      2.1 × 10⁹/L
+Lymphocytes:      0.6 × 10⁹/L (low)
+Platelets:        98 × 10⁹/L (mild thrombocytopenia)
+CRP:              218 mg/L (markedly elevated)
+Procalcitonin:    4.8 µg/L (elevated — bacterial infection likely)
+Urea:             11.2 mmol/L (elevated)
+Creatinine:       104 µmol/L
+eGFR:             88 mL/min/1.73m²
+Na:               129 mmol/L (hyponatraemia — SIADH vs. sepsis-related)
+K:                3.3 mmol/L (hypokalaemia)
+LDH:              612 U/L (markedly elevated — raises PCP suspicion)
+Albumin:          22 g/L (hypoalbuminaemia — severe)
+ABG (on 4L O2):   pH 7.43, pO2 8.1 kPa, pCO2 3.8 kPa, HCO3 21 — type 1 RF
+CD4 count:        88 cells/µL (worsened from 112 at diagnosis)
+HIV VL:           Pending (sent to virology)
+Sputum culture:   Pending
+Blood cultures:   x2 sets sent — pending
+Beta-D-glucan:    Pending (sent — PCP screen)
+Urine Legionella antigen: Negative
+Urine Pneumococcal antigen: Positive
+
+------------------------------------------------------------
+IMAGING
+------------------------------------------------------------
+
+CXR: Right lower lobe consolidation with air bronchograms. Bilateral perihilar
+     haziness. No pleural effusion. No pneumothorax. Left lung clear.
+     Pattern: right lower lobe pneumonia — cannot exclude concurrent PCP.
+
+CT chest (with contrast):
+  Right lower lobe dense consolidation — lobar pneumonia pattern.
+  Bilateral ground-glass opacification predominantly perihilar and upper lobe —
+  pattern consistent with concurrent Pneumocystis jirovecii pneumonia (PCP).
+  Mediastinal lymphadenopathy (largest node 1.8 × 1.4 cm) — reactive vs. lymphoma.
+  No pleural effusion. No cavitation. No empyema.
+
+------------------------------------------------------------
+BRONCHOSCOPY / BAL (PLANNED)
+------------------------------------------------------------
+
+Bronchoscopy and BAL planned for 28 June 2026 to obtain definitive PCP diagnosis.
+Interventional pulmonology team notified — Dr. Priya Subramaniam to co-ordinate.
+
+------------------------------------------------------------
+ASSESSMENT
+------------------------------------------------------------
+
+Severe community-acquired pneumonia — Pneumococcus confirmed (urinary antigen +ve).
+Concurrent Pneumocystis jirovecii pneumonia (PCP) — clinically suspected
+  (CD4 88, LDH 612, bilateral ground-glass on CT, SpO2 88% on air).
+HIV infection — advanced (CD4 88 cells/µL), not yet on ART.
+Sepsis — NEWS2 score 9, borderline haemodynamic compromise.
+Hyponatraemia (SIADH pattern) — Na 129 mmol/L.
+Hypokalaemia — K 3.3 mmol/L.
+Normocytic anaemia and thrombocytopenia — HIV-related bone marrow suppression.
+
+------------------------------------------------------------
+PLAN
+------------------------------------------------------------
+
+1. Admit to Infectious Diseases ward — isolation room, droplet precautions.
+   Neutropaenic precautions given WBC 3.2 × 10⁹/L.
+2. IV Co-Amoxiclav 1.2g 8-hourly + Azithromycin 500mg once daily (CAP — Pneumococcus).
+3. IV Clindamycin 600mg 8-hourly + Primaquine 30mg once daily for PCP
+   (TMP-SMX allergy — alternative regimen). Continue until BAL confirms/excludes.
+4. High-flow oxygen — maintain SpO2 > 92%. ICU escalation threshold if SpO2 < 90% on
+   > 6L or clinical deterioration.
+5. IV fluid resuscitation — Hartmann's 500mL bolus now, then reassess.
+6. IV Potassium replacement — 40mmol KCl in 500mL over 4 hours.
+7. Fluid restriction 1.5L/day — manage SIADH (Na 129 mmol/L). Monitor Na 12-hourly.
+8. ID consult — Dr. Priya Subramaniam to review ART initiation timing (caution:
+   immune reconstitution inflammatory syndrome risk if started during active PCP).
+9. Bronchoscopy + BAL — 28 June 2026. Zainab Adeyemi (sister) to be consented
+   as next of kin if patient unable to consent.
+10. Repeat CD4 and VL in 72 hours.
+11. Social work referral — housing, support services, HIV disclosure counselling.
+12. Notify public health — HIV case notification (statutory requirement).
+13. Patient ID wristband: 9920384.
+
+------------------------------------------------------------
+
+Signed:           Dr. Aisha Kamara, ID Registrar
+Date:             27 June 2026
+Facility Contact: Northwestern Memorial Hospital, 251 E Huron Street, Chicago IL 60611

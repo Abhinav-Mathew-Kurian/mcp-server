@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1020" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1a0e2e"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0,9 3,0 6" fill="#a78bfa"/>
+    </marker>
+    <marker id="arrG" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0,9 3,0 6" fill="#34d399"/>
+    </marker>
+    <marker id="arrO" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0,9 3,0 6" fill="#fbbf24"/>
+    </marker>
+    <filter id="sh">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <rect width="1100" height="1020" fill="url(#bg)"/>
+
+  <text x="550" y="38" text-anchor="middle" fill="#ddd6fe" font-size="19" font-weight="bold">Flow A — Corti Web UI · Step-by-Step</text>
+  <text x="550" y="58" text-anchor="middle" fill="#5b21b6" font-size="11">Paste a note into Corti console → MCP → pipeline → result rendered back in browser</text>
+
+  <!-- STEP boxes helper: x=90 width=920 -->
+
+  <!-- A1 -->
+  <rect x="60" y="74" width="980" height="58" rx="9" fill="#1e0a4e" stroke="#7c3aed" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="103" r="14" fill="#7c3aed"/>
+  <text x="98" y="108" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A1</text>
+  <text x="126" y="98" fill="#ddd6fe" font-size="12" font-weight="bold">You paste the clinical note into Corti Agent browser (console.corti.ai)</text>
+  <text x="126" y="116" fill="#7c3aed" font-size="10">Corti LLM reads message → recognises registered Custom Expert (your MCP server) → decides to call run_pipeline tool</text>
+
+  <!-- A2 -->
+  <rect x="60" y="146" width="980" height="70" rx="9" fill="#1e0a4e" stroke="#6d28d9" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="181" r="14" fill="#6d28d9"/>
+  <text x="98" y="186" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A2</text>
+  <text x="126" y="168" fill="#ddd6fe" font-size="12" font-weight="bold">Corti backend sends HTTP POST to ngrok public URL</text>
+  <text x="126" y="184" fill="#7c3aed" font-size="10">POST https://&lt;ngrok-id&gt;.ngrok-free.dev/mcp  ·  Content-Type: application/json  ·  MCP jsonrpc 2.0</text>
+  <text x="126" y="200" fill="#5b21b6" font-size="10">ngrok decrypts TLS → forwards plain HTTP to localhost:3456 · your Express server receives tools/call request</text>
+
+  <!-- A3 -->
+  <rect x="60" y="230" width="980" height="58" rx="9" fill="#1e0a4e" stroke="#6366f1" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="259" r="14" fill="#6366f1"/>
+  <text x="98" y="264" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A3</text>
+  <text x="126" y="252" fill="#ddd6fe" font-size="12" font-weight="bold">MCP Server validates and routes (src/mcpServer.ts)</text>
+  <text x="126" y="268" fill="#6d28d9" font-size="10">Reads method=tools/call · name=run_pipeline · extracts clinicalNote from params.arguments → passes to fixMojibake()</text>
+
+  <!-- A4 -->
+  <rect x="60" y="302" width="980" height="82" rx="9" fill="#0f1e0f" stroke="#10b981" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="343" r="14" fill="#059669"/>
+  <text x="98" y="348" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A4</text>
+  <text x="126" y="322" fill="#6ee7b7" font-size="12" font-weight="bold">fixMojibake() — repair corrupted characters from browser encoding</text>
+  <text x="126" y="338" fill="#34d399" font-size="10">Browser encoding corrupts: Â°C→°C  Âµmol→µmol  Ã—→×  â€"→—  â¹→⁹</text>
+  <text x="126" y="353" fill="#059669" font-size="10">Strategy: swap × and — to placeholders FIRST (byte overlap risk) → Buffer latin1→utf8 repair → restore placeholders</text>
+  <text x="126" y="368" fill="#065f46" font-size="10">Why order matters: × bytes (0xC3 0x97) overlap with — detection byte (0x97). Wrong order destroys × permanently.</text>
+
+  <!-- A5 -->
+  <rect x="60" y="398" width="980" height="70" rx="9" fill="#0f1e0f" stroke="#10b981" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="433" r="14" fill="#059669"/>
+  <text x="98" y="438" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A5</text>
+  <text x="126" y="420" fill="#6ee7b7" font-size="12" font-weight="bold">Layer 1 — Regex PHI Detection (src/phiDetector.ts → regexSpans)</text>
+  <text x="126" y="436" fill="#34d399" font-size="10">17 patterns run locally: SSN · phone (US formats) · email · dates (5 formats) · MRN · NPI · Patient name · family member names · address · facility · ZIP</text>
+  <text x="126" y="452" fill="#059669" font-size="10">Each match → span {value, start, end}. Spans trimmed for leading/trailing whitespace. Runs in milliseconds, no network.</text>
+
+  <!-- A6 -->
+  <rect x="60" y="482" width="980" height="82" rx="9" fill="#0f1e0f" stroke="#10b981" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="523" r="14" fill="#059669"/>
+  <text x="98" y="528" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A6</text>
+  <text x="126" y="502" fill="#6ee7b7" font-size="12" font-weight="bold">Layer 2 — NER Detection (nerSpans → compromise.js offline NLP)</text>
+  <text x="126" y="518" fill="#34d399" font-size="10">doc.people() · doc.places() · doc.organizations() — all offline, no API calls</text>
+  <text x="126" y="534" fill="#059669" font-size="10">Filters: relationship words removed (son/wife/sister/carer etc.) · medical eponyms removed (glasgow/ottawa/wells/tokyo etc.)</text>
+  <text x="126" y="550" fill="#065f46" font-size="10">Explicit Dr. pattern: /\bDr\.?\s+[A-Z][a-zA-Z-]+(?:\s+[A-Z][a-zA-Z-]+)*/  ← hyphen in char class catches Mei-Xing Loh fully</text>
+
+  <!-- A7 -->
+  <rect x="60" y="578" width="980" height="70" rx="9" fill="#0f1e0f" stroke="#059669" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="613" r="14" fill="#047857"/>
+  <text x="98" y="618" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A7</text>
+  <text x="126" y="600" fill="#6ee7b7" font-size="12" font-weight="bold">Component Expansion → Layer 3 Consistency Pass</text>
+  <text x="126" y="616" fill="#34d399" font-size="10">expandWithComponents(): splits "Wei-Lin Huang" → Wei, Lin, Huang  ·  "Kevin Huang" → Kevin, Huang  ·  filters COMMON_WORDS (medical/center/university…)</text>
+  <text x="126" y="632" fill="#059669" font-size="10">consistencySpans(): full-text sweep for every known PHI value + components · word-boundary check · skips bare numerics ≤4 digits to prevent year false positives</text>
+
+  <!-- A8 -->
+  <rect x="60" y="662" width="980" height="70" rx="9" fill="#150d2e" stroke="#7c3aed" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="697" r="14" fill="#6d28d9"/>
+  <text x="98" y="702" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A8</text>
+  <text x="126" y="680" fill="#ddd6fe" font-size="12" font-weight="bold">Span merge + Codename assignment + AES-256-GCM encryption</text>
+  <text x="126" y="696" fill="#a78bfa" font-size="10">mergeOverlapping(): sort by start, longest wins on overlap · Replace right-to-left (preserves indices) · unique value → unique codename &lt;&lt;WORD-XXXX&gt;&gt;</text>
+  <text x="126" y="712" fill="#7c3aed" font-size="10">AES-256-GCM: per-run 256-bit random key · phi_map.enc (ciphertext + auth tag) + patient_key.b64 stored separately</text>
+
+  <!-- A9 -->
+  <rect x="60" y="746" width="980" height="58" rx="9" fill="#1a1007" stroke="#b45309" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="775" r="14" fill="#b45309"/>
+  <text x="98" y="780" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A9</text>
+  <text x="126" y="768" fill="#fde68a" font-size="12" font-weight="bold">Facts Extraction — anonymized text sent to Corti LLM (src/factsExtractor.ts)</text>
+  <text x="126" y="784" fill="#b45309" font-size="10">ONLY STEP WHERE DATA LEAVES LOCAL MACHINE. Sends anonymized text with &lt;&lt;CODENAMES&gt;&gt;. LLM extracts diagnoses, vitals, meds, age, sex → facts.json</text>
+
+  <!-- A10 -->
+  <rect x="60" y="818" width="980" height="58" rx="9" fill="#1a1007" stroke="#ca8a04" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="847" r="14" fill="#ca8a04"/>
+  <text x="98" y="852" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A10</text>
+  <text x="126" y="836" fill="#fde68a" font-size="12" font-weight="bold">ICD-10 Classification + ZK Proof Generation (snarkjs Groth16)</text>
+  <text x="126" y="852" fill="#b45309" font-size="10">getDiagnosisChapter(): diagnoses-first iteration → keyword match to ICD chapter. snarkjs.groth16.fullProve(): 279 constraints on BN128 curve</text>
+  <text x="126" y="868" fill="#78350f" font-size="10">Private inputs: ageYears, ageBracketLow, diagnosisChapter, patientKeyFp, factsFp (field elements mod BN128 prime). Local verify → proof.json + public_signals.json</text>
+
+  <!-- A11 -->
+  <rect x="60" y="890" width="980" height="58" rx="9" fill="#1e0a4e" stroke="#7c3aed" stroke-width="1.4" filter="url(#sh)"/>
+  <circle cx="98" cy="919" r="14" fill="#7c3aed"/>
+  <text x="98" y="924" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A11</text>
+  <text x="126" y="908" fill="#ddd6fe" font-size="12" font-weight="bold">MCP response bundle returned → ngrok → Corti LLM → rendered in browser chat</text>
+  <text x="126" y="924" fill="#a78bfa" font-size="10">JSON: anonymizedText · facts (diagnoses, vitals, meds) · zkSummary (ageRange, icdChapter, verified:true, system:groth16, constraints:279)</text>
+  <text x="126" y="940" fill="#6d28d9" font-size="10">Corti formats tool response → displays de-identified note + structured facts + ZK proof panel in conversation UI</text>
+
+  <!-- vertical flow indicator -->
+  <line x1="42" y1="103" x2="42" y2="934" stroke="#3b0764" stroke-width="2" stroke-dasharray="4,4"/>
+  <line x1="42" y1="140" x2="42" y2="146" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="42" y1="220" x2="42" y2="230" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="42" y1="294" x2="42" y2="302" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="42" y1="390" x2="42" y2="398" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="42" y1="474" x2="42" y2="482" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="42" y1="570" x2="42" y2="578" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="42" y1="654" x2="42" y2="662" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="42" y1="738" x2="42" y2="746" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="42" y1="810" x2="42" y2="818" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="42" y1="882" x2="42" y2="890" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- legend -->
+  <rect x="60" y="964" width="980" height="44" rx="8" fill="#071a12" stroke="#166534" stroke-width="1"/>
+  <text x="550" y="982" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold">PHI never leaves local machine</text>
+  <text x="550" y="998" text-anchor="middle" fill="#16a34a" font-size="10">Steps A4–A8 run entirely locally (regex + NLP + crypto) · Only &lt;&lt;CODENAMES&gt;&gt; in step A9 · ZK proof in A10 proves age+ICD without revealing values</text>
+</svg>

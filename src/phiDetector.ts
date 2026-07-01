@@ -149,7 +149,7 @@ function nerSpans(text: string): Span[] {
   });
 
   // Explicit "Dr. Firstname Lastname" catch — some are missed by NER
-  const drPattern = /\bDr\.?\s+[A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+)*/g;
+  const drPattern = /\bDr\.?\s+[A-Z][a-zA-Z-]+(?:\s+[A-Z][a-zA-Z-]+)*/g;
   let m: RegExpExecArray | null;
   while ((m = drPattern.exec(text)) !== null) {
     entityStrings.add(m[0].trim());
@@ -173,6 +173,11 @@ function consistencySpans(text: string, knownValues: Set<string>): Span[] {
   const spans: Span[] = [];
   for (const value of knownValues) {
     if (value.length < 3) continue;
+    // Skip bare short numerics (years, 3-4 digit numbers) — they appear as
+    // components of full date strings like "14 June 2026" and would cause
+    // false positives when "2026" is then found in unrelated year references
+    // like "diagnosed 2014" or "last review, February 2026".
+    if (/^\d{1,4}$/.test(value)) continue;
     const lower = text.toLowerCase();
     const valueLower = value.toLowerCase();
     let pos = 0;

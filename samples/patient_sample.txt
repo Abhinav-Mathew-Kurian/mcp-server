@@ -1,0 +1,69 @@
+CLINICAL NOTE — FICTITIOUS PATIENT DATA (FOR TESTING ONLY)
+
+Patient: John Michael Smith
+Date of Birth: 14/03/1979
+MRN: 00482917
+SSN: 324-56-7890
+Address: 45 Maple Drive, Springfield, IL 62701
+Phone: (217) 555-0182
+Email: jsmith1979@email.com
+Referring Physician: Dr. Emily Carter, NPI 1234567890
+Facility: Springfield General Hospital, 200 N. Main St, Springfield IL
+
+Visit Date: 09 June 2026
+Reason for Visit: Chest pain and shortness of breath, onset 3 days ago.
+
+History of Present Illness:
+John Smith is a 47-year-old male with a history of Type 2 Diabetes Mellitus, hypertension,
+and hyperlipidemia who presents with exertional chest pain and dyspnea. He reports the pain
+radiates to his left arm. No fever or chills. His wife Mary Smith (contact: 217-555-0183) was
+present during the consultation.
+
+Past Medical History:
+- Type 2 Diabetes Mellitus (diagnosed 2015, last HbA1c 8.2% on 2026-03-15)
+- Hypertension (diagnosed 2018)
+- Hyperlipidemia
+
+Current Medications:
+- Metformin 1000mg twice daily
+- Lisinopril 10mg once daily
+- Atorvastatin 40mg nightly
+- Aspirin 81mg daily (started today)
+
+Allergies: Penicillin (rash)
+
+Vital Signs:
+- BP: 148/92 mmHg
+- HR: 88 bpm
+- RR: 18 breaths/min
+- SpO2: 96% on room air
+- Temperature: 37.1°C
+- Weight: 92 kg, Height: 178 cm
+
+Physical Examination:
+General: Alert, oriented, mild distress. No acute findings on chest auscultation.
+Cardiovascular: Regular rate and rhythm, no murmurs.
+
+Labs:
+- Troponin I: Pending
+- BNP: 145 pg/mL (elevated)
+- HbA1c: 8.2%
+- eGFR: 72 mL/min/1.73m²
+
+ECG: ST depression in leads V4-V6, suggestive of ischemia.
+
+Assessment:
+Probable NSTEMI vs. unstable angina. Metabolic syndrome with poorly controlled diabetes
+contributing to cardiovascular risk.
+
+Plan:
+1. Admit to cardiology ward.
+2. Serial troponins every 6 hours.
+3. Cardiology consult — Dr. Robert Williams (pager 4421).
+4. Heparin infusion per ACS protocol.
+5. Continue home medications; hold Metformin pending contrast procedures.
+6. Patient and family counselled on diagnosis and plan. Patient ID wristband: 00482917.
+
+Signed: Dr. Emily Carter, MD
+Date: 09/06/2026
+Facility Contact: 217-555-9000

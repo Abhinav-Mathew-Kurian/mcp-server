@@ -1,0 +1,383 @@
+"""Generate 3 clinical note test PDFs using reportlab."""
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import mm
+import os
+
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'samples')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+W, H = A4
+MARGIN = 20 * mm
+LINE_H = 5.2 * mm
+FONT_BODY = 9
+FONT_HEADER = 10
+FONT_SECTION = 9
+
+PATIENTS = [
+    {
+        "filename": "test_patient_1_wei_lin_huang.pdf",
+        "lines": [
+            ("CLINICAL NOTE — FICTITIOUS PATIENT DATA (FOR TESTING ONLY)", "header"),
+            ("", "gap"),
+            ("Patient:            Wei-Lin Huang", "body"),
+            ("Date of Birth:      03 September 1948", "body"),
+            ("MRN:                4481920", "body"),
+            ("SSN:                512-63-9047", "body"),
+            ("Address:            88 Jade Garden Court, San Francisco, CA 94108", "body"),
+            ("Phone:              (415) 667-3921", "body"),
+            ("Email:              weilin.huang48@gmail.com", "body"),
+            ("Referring Physician: Dr. Mei-Xing Loh, NPI 6612039485", "body"),
+            ("Facility:           UCSF Medical Center, San Francisco", "body"),
+            ("", "gap"),
+            ("Visit Date:         14 June 2026", "body"),
+            ("Reason for Visit:   Palpitations and progressive exertional dyspnoea — known atrial", "body"),
+            ("                    fibrillation, query decompensated heart failure.", "body"),
+            ("", "gap"),
+            ("HISTORY OF PRESENT ILLNESS", "section"),
+            ("", "gap"),
+            ("Wei-Lin Huang is a 77-year-old male, originally from Guangzhou, China, with a", "body"),
+            ("background of permanent atrial fibrillation and ischaemic cardiomyopathy presenting", "body"),
+            ("with a 10-day history of worsening dyspnoea on exertion (now limiting to < 50 metres),", "body"),
+            ("bilateral ankle oedema, and two episodes of nocturnal orthopnoea. He denies chest", "body"),
+            ("pain or syncope. His son Kevin Huang (contact: 415-883-2047) is his primary carer.", "body"),
+            ("His wife Mei-Fang Huang (home: 415-667-3921) has limited English — Kevin acts as", "body"),
+            ("interpreter. GP referral from Dr. Mei-Xing Loh (clinic: 415-220-8844).", "body"),
+            ("", "gap"),
+            ("PAST MEDICAL HISTORY", "section"),
+            ("", "gap"),
+            ("- Permanent atrial fibrillation (diagnosed 2014, on anticoagulation)", "body"),
+            ("- Ischaemic cardiomyopathy (EF 35%, last echo 2024)", "body"),
+            ("- Hypertension (diagnosed 2003)", "body"),
+            ("- Type 2 diabetes mellitus (HbA1c 7.9% at last review, February 2026)", "body"),
+            ("- CKD Stage 3a (eGFR 52 mL/min/1.73m2)", "body"),
+            ("- Prior NSTEMI (2019, medically managed — no PCI)", "body"),
+            ("- OSA (on CPAP since 2021)", "body"),
+            ("", "gap"),
+            ("CURRENT MEDICATIONS", "section"),
+            ("", "gap"),
+            ("- Apixaban 5mg twice daily (anticoagulation for AF)", "body"),
+            ("- Bisoprolol 5mg once daily (rate control)", "body"),
+            ("- Furosemide 40mg once daily (diuretic)", "body"),
+            ("- Sacubitril/Valsartan 97/103mg twice daily (HFrEF)", "body"),
+            ("- Spironolactone 25mg once daily", "body"),
+            ("- Empagliflozin 10mg once daily", "body"),
+            ("- Atorvastatin 40mg once daily", "body"),
+            ("- Metformin 500mg twice daily", "body"),
+            ("", "gap"),
+            ("ALLERGIES", "section"),
+            ("", "gap"),
+            ("Ramipril (dry cough — intolerable), Sulfonamides (rash)", "body"),
+            ("", "gap"),
+            ("VITAL SIGNS", "section"),
+            ("", "gap"),
+            ("BP: 158/96 mmHg   HR: 88 bpm (irregularly irregular)   RR: 22 breaths/min", "body"),
+            ("SpO2: 91% on room air -> 95% on 2L nasal cannula   Temperature: 36.8 degrees C", "body"),
+            ("Weight: 74 kg (up 6 kg from baseline 68 kg — 10 days)   BMI: 26.2 kg/m2", "body"),
+            ("JVP: Elevated 5 cm above sternal angle", "body"),
+            ("", "gap"),
+            ("LABS", "section"),
+            ("", "gap"),
+            ("Hb: 118 g/L (mild normocytic anaemia)", "body"),
+            ("WBC: 9.4 x 10^9/L     Platelets: 214 x 10^9/L", "body"),
+            ("BNP: 1,842 pg/mL (markedly elevated — consistent with decompensation)", "body"),
+            ("Troponin I: 0.08 ug/L (mildly elevated — chronic elevation pattern)", "body"),
+            ("Creatinine: 148 umol/L (elevated, up from baseline 112 umol/L)", "body"),
+            ("eGFR: 38 mL/min/1.73m2 (acutely worsened — cardiorenal syndrome)", "body"),
+            ("Na: 133 mmol/L   K: 4.9 mmol/L   Albumin: 31 g/L   HbA1c: 8.3%", "body"),
+            ("LFTs: ALT 68 U/L, AST 74 U/L (mildly elevated — hepatic congestion)", "body"),
+            ("", "gap"),
+            ("IMAGING", "section"),
+            ("", "gap"),
+            ("CXR: Cardiomegaly. Bilateral perihilar haziness. Upper lobe venous diversion.", "body"),
+            ("     Bilateral small pleural effusions. Kerley B lines at right base.", "body"),
+            ("     Findings consistent with acute pulmonary oedema.", "body"),
+            ("", "gap"),
+            ("Echo (today): EF 28% (worsened from 35% in 2024). Severe LV dilation.", "body"),
+            ("     Global hypokinesis. Grade III diastolic dysfunction. Moderate MR.", "body"),
+            ("     Estimated RVSP 48 mmHg. Small pericardial effusion.", "body"),
+            ("", "gap"),
+            ("ASSESSMENT", "section"),
+            ("", "gap"),
+            ("Decompensated heart failure (HFrEF, EF 28%) — acute-on-chronic exacerbation.", "body"),
+            ("Atrial fibrillation — permanent, rate controlled.", "body"),
+            ("Cardiorenal syndrome type 1 — acute AKI in context of cardiac decompensation.", "body"),
+            ("Dilutional hyponatraemia — secondary to fluid overload.", "body"),
+            ("", "gap"),
+            ("PLAN", "section"),
+            ("", "gap"),
+            ("1. Admit to Cardiology ward — HDU monitoring (telemetry, strict fluid balance).", "body"),
+            ("2. IV Furosemide 80mg bolus then 10mg/hr infusion — target 1–1.5L negative daily.", "body"),
+            ("3. Continue Sacubitril/Valsartan — do NOT uptitrate until euvolaemic.", "body"),
+            ("4. Continue Apixaban — no dose change (renal dosing already applied).", "body"),
+            ("5. Hold Empagliflozin during acute admission (risk of euglycaemic DKA).", "body"),
+            ("6. Hold Metformin — creatinine elevated, eGFR < 45.", "body"),
+            ("7. Repeat echo in 48 hours post-diuresis to reassess EF and effusions.", "body"),
+            ("8. Discharge planning: Kevin Huang to be counselled on daily weight monitoring.", "body"),
+            ("9. Home nursing follow-up at 88 Jade Garden Court.", "body"),
+            ("10. Patient ID wristband: 4481920.", "body"),
+            ("", "gap"),
+            ("Signed:           Dr. Rachel Okonkwo, Registrar Cardiology", "body"),
+            ("Date:             14 June 2026", "body"),
+            ("Facility Contact: UCSF Medical Center, 505 Parnassus Ave, San Francisco CA 94143", "body"),
+        ]
+    },
+    {
+        "filename": "test_patient_2_gabriela_reyes.pdf",
+        "lines": [
+            ("CLINICAL NOTE — FICTITIOUS PATIENT DATA (FOR TESTING ONLY)", "header"),
+            ("", "gap"),
+            ("Patient:            Gabriela Reyes-Montoya", "body"),
+            ("Date of Birth:      21 July 1989", "body"),
+            ("MRN:                8834712", "body"),
+            ("SSN:                634-28-5510", "body"),
+            ("Address:            217 Sunflower Drive, Houston, TX 77003", "body"),
+            ("Phone:              (713) 994-6628", "body"),
+            ("Email:              g.reyesmontoya89@outlook.com", "body"),
+            ("Referring Physician: Dr. Carlos Espinoza-Vega, NPI 7723041985", "body"),
+            ("Facility:           Memorial Hermann Hospital, Houston", "body"),
+            ("", "gap"),
+            ("Visit Date:         22 June 2026", "body"),
+            ("Reason for Visit:   Breakthrough tonic-clonic seizure — known epilepsy,", "body"),
+            ("                    query non-compliance vs. breakthrough.", "body"),
+            ("", "gap"),
+            ("HISTORY OF PRESENT ILLNESS", "section"),
+            ("", "gap"),
+            ("Gabriela Reyes-Montoya is a 36-year-old female with known juvenile myoclonic", "body"),
+            ("epilepsy (JME) presenting via ambulance following a witnessed tonic-clonic seizure", "body"),
+            ("lasting approximately 90 seconds at her workplace. She had no aura and was post-ictal", "body"),
+            ("for approximately 20 minutes. Her husband Roberto Montoya (contact: 713-445-8812)", "body"),
+            ("was contacted and is en route. Her mother Lucia Reyes (home: 713-994-6628) also", "body"),
+            ("notified. She is 14 weeks pregnant (G2P1). She had missed two doses of", "body"),
+            ("Levetiracetam this week due to nausea.", "body"),
+            ("Last seizure prior to today: 11 March 2024 (18 months seizure-free until today).", "body"),
+            ("Neurologist: Dr. Carlos Espinoza-Vega (clinic: 713-667-2200).", "body"),
+            ("", "gap"),
+            ("PAST MEDICAL HISTORY", "section"),
+            ("", "gap"),
+            ("- Juvenile myoclonic epilepsy (diagnosed age 17, on Levetiracetam since 2007)", "body"),
+            ("- Anxiety disorder (GAD, on Sertraline — continued in pregnancy)", "body"),
+            ("- G2P1 — 14 weeks gestation (planned pregnancy)", "body"),
+            ("- Prior febrile seizure (age 3, no recurrence until JME diagnosis)", "body"),
+            ("", "gap"),
+            ("CURRENT MEDICATIONS", "section"),
+            ("", "gap"),
+            ("- Levetiracetam 1000mg twice daily (AED — first line for JME in pregnancy)", "body"),
+            ("- Sertraline 50mg once daily (anxiety — continued per psychiatrist advice)", "body"),
+            ("- Folic acid 5mg once daily (pregnancy — high-dose due to AED use)", "body"),
+            ("- Vitamin D 1000 IU once daily", "body"),
+            ("", "gap"),
+            ("ALLERGIES", "section"),
+            ("", "gap"),
+            ("Valproate (teratogenic — contraindicated in pregnancy), Penicillin (urticaria)", "body"),
+            ("", "gap"),
+            ("VITAL SIGNS (POST-ICTAL)", "section"),
+            ("", "gap"),
+            ("BP: 122/78 mmHg   HR: 104 bpm (sinus tachycardia — post-ictal)   RR: 16/min", "body"),
+            ("SpO2: 98% on room air   Temperature: 37.1 degrees C   GCS: 15/15", "body"),
+            ("Weight: 63 kg   Height: 164 cm   BMI: 23.4 kg/m2", "body"),
+            ("", "gap"),
+            ("LABS", "section"),
+            ("", "gap"),
+            ("Hb: 112 g/L (mild anaemia — pregnancy related)", "body"),
+            ("WBC: 11.8 x 10^9/L (mildly elevated — physiological in pregnancy)", "body"),
+            ("Platelets: 288 x 10^9/L", "body"),
+            ("Levetiracetam level: 18 umol/L (subtherapeutic — therapeutic range 35-110 umol/L)", "body"),
+            ("Na: 138 mmol/L   K: 3.6 mmol/L   Glucose: 5.8 mmol/L   CRP: 4 mg/L (normal)", "body"),
+            ("Creatinine: 62 umol/L   LFTs: Normal   Beta-hCG: consistent with 14 weeks", "body"),
+            ("", "gap"),
+            ("OBSTETRIC ASSESSMENT", "section"),
+            ("", "gap"),
+            ("Foetal heart rate: 152 bpm (Doppler — normal for gestational age).", "body"),
+            ("No uterine contractions noted.", "body"),
+            ("Obstetrics registrar (Dr. Ana Lima, pager 4421) notified — bedside review requested.", "body"),
+            ("", "gap"),
+            ("IMAGING", "section"),
+            ("", "gap"),
+            ("CT head (non-contrast, ALARA protocol, pregnancy shielded):", "body"),
+            ("No intracranial haemorrhage. No space-occupying lesion. No midline shift.", "body"),
+            ("Ventricles normal. No acute abnormality identified.", "body"),
+            ("", "gap"),
+            ("ASSESSMENT", "section"),
+            ("", "gap"),
+            ("Breakthrough tonic-clonic seizure in known JME — dose-related (subtherapeutic", "body"),
+            ("Levetiracetam level 18 umol/L, missed doses confirmed).", "body"),
+            ("14 weeks gestation — foetal wellbeing confirmed on Doppler, no obstetric concerns.", "body"),
+            ("Anxiety disorder (GAD) — ongoing, Sertraline continued.", "body"),
+            ("Anaemia of pregnancy — Hb 112 g/L, monitor.", "body"),
+            ("", "gap"),
+            ("PLAN", "section"),
+            ("", "gap"),
+            ("1. Oral Levetiracetam dose: take missed doses now (1000mg), resume regular schedule.", "body"),
+            ("2. Uptitrate Levetiracetam to 1250mg twice daily — subtherapeutic level confirmed.", "body"),
+            ("3. Neurology follow-up — Dr. Carlos Espinoza-Vega within 1 week (713-667-2200).", "body"),
+            ("4. Obstetric review — Dr. Ana Lima to assess foetal wellbeing.", "body"),
+            ("5. Driving advice: seizure today resets seizure-free period — must not drive.", "body"),
+            ("6. Seizure first aid education given to Roberto Montoya and Lucia Reyes.", "body"),
+            ("7. Patient ID wristband: 8834712.", "body"),
+            ("", "gap"),
+            ("Signed:           Dr. James Whitfield, Senior ED Registrar", "body"),
+            ("Date:             22 June 2026", "body"),
+            ("Facility Contact: Memorial Hermann Hospital, 6411 Fannin Street, Houston TX 77030", "body"),
+        ]
+    },
+    {
+        "filename": "test_patient_3_tariq_adeyemi.pdf",
+        "lines": [
+            ("CLINICAL NOTE — FICTITIOUS PATIENT DATA (FOR TESTING ONLY)", "header"),
+            ("", "gap"),
+            ("Patient:            Tariq Olamide Adeyemi", "body"),
+            ("Date of Birth:      08 February 2001", "body"),
+            ("MRN:                9920384", "body"),
+            ("SSN:                741-55-2263", "body"),
+            ("Address:            14 Elmwood Avenue, Chicago, IL 60611", "body"),
+            ("Phone:              (312) 774-5509", "body"),
+            ("Email:              tariq.adeyemi01@icloud.com", "body"),
+            ("Referring Physician: Dr. Priya Subramaniam, NPI 8841760293", "body"),
+            ("Facility:           Northwestern Memorial Hospital, Chicago", "body"),
+            ("", "gap"),
+            ("Visit Date:         27 June 2026", "body"),
+            ("Reason for Visit:   Fever, rigors, productive cough — community-acquired pneumonia", "body"),
+            ("                    vs. opportunistic infection. Background of newly diagnosed HIV.", "body"),
+            ("", "gap"),
+            ("HISTORY OF PRESENT ILLNESS", "section"),
+            ("", "gap"),
+            ("Tariq Olamide Adeyemi is a 25-year-old male presenting with a 5-day history of", "body"),
+            ("high-grade fever (Tmax 39.8 degrees C at home), rigors, productive cough with", "body"),
+            ("yellow-green sputum, pleuritic right-sided chest pain, and progressive exertional", "body"),
+            ("dyspnoea. He was diagnosed with HIV infection 6 weeks ago (CD4 count 112 cells/uL", "body"),
+            ("at diagnosis — not yet on ART at time of presentation). His sister Zainab Adeyemi", "body"),
+            ("(contact: 312-990-4473) brought him to the ED. His uncle Emmanuel Adeyemi", "body"),
+            ("(home: 773-554-8821) was also notified.", "body"),
+            ("HIV Clinic follow-up was booked with Dr. Priya Subramaniam (clinic: 312-695-4440)", "body"),
+            ("for 04 July 2026 — patient did not attend prior to this admission.", "body"),
+            ("", "gap"),
+            ("PAST MEDICAL HISTORY", "section"),
+            ("", "gap"),
+            ("- HIV infection (newly diagnosed 14 May 2026 — CD4 112 cells/uL, VL 88,400 copies/mL)", "body"),
+            ("- No prior AIDS-defining illnesses documented", "body"),
+            ("- No prior opportunistic infections", "body"),
+            ("- Childhood asthma (resolved, no current treatment)", "body"),
+            ("", "gap"),
+            ("CURRENT MEDICATIONS", "section"),
+            ("", "gap"),
+            ("- None (ART not yet commenced — awaiting ID clinic)", "body"),
+            ("- Paracetamol 1g PRN (self-medicating for fever)", "body"),
+            ("", "gap"),
+            ("ALLERGIES", "section"),
+            ("", "gap"),
+            ("Trimethoprim-Sulfamethoxazole (TMP-SMX) — rash (documented at HIV diagnosis review)", "body"),
+            ("", "gap"),
+            ("VITAL SIGNS", "section"),
+            ("", "gap"),
+            ("BP: 108/64 mmHg (borderline hypotensive)   HR: 118 bpm (sinus tachycardia)", "body"),
+            ("RR: 26 breaths/min (tachypnoeic)   SpO2: 88% on room air -> 94% on 4L NC", "body"),
+            ("Temperature: 39.6 degrees C   Weight: 66 kg   Height: 179 cm   BMI: 20.6 kg/m2", "body"),
+            ("CURB-65 Score: 2 (tachypnoea + urea elevated) — moderate severity CAP", "body"),
+            ("", "gap"),
+            ("LABS", "section"),
+            ("", "gap"),
+            ("Hb: 104 g/L (normocytic anaemia — HIV-related)", "body"),
+            ("WBC: 3.2 x 10^9/L (leucopaenia)   Neutrophils: 2.1 x 10^9/L", "body"),
+            ("Lymphocytes: 0.6 x 10^9/L (low)   Platelets: 98 x 10^9/L (mild thrombocytopenia)", "body"),
+            ("CRP: 218 mg/L (markedly elevated)   Procalcitonin: 4.8 ug/L (elevated)", "body"),
+            ("Urea: 11.2 mmol/L   Creatinine: 104 umol/L   eGFR: 88 mL/min/1.73m2", "body"),
+            ("Na: 129 mmol/L (hyponatraemia)   K: 3.3 mmol/L (hypokalaemia)", "body"),
+            ("LDH: 612 U/L (markedly elevated — raises PCP suspicion)", "body"),
+            ("Albumin: 22 g/L (hypoalbuminaemia — severe)", "body"),
+            ("ABG (on 4L O2): pH 7.43, pO2 8.1 kPa, pCO2 3.8 kPa, HCO3 21 — type 1 RF", "body"),
+            ("CD4 count: 88 cells/uL (worsened from 112 at diagnosis)", "body"),
+            ("Urine Pneumococcal antigen: Positive   Urine Legionella antigen: Negative", "body"),
+            ("Blood cultures x2: Pending   Beta-D-glucan: Pending (PCP screen)", "body"),
+            ("", "gap"),
+            ("IMAGING", "section"),
+            ("", "gap"),
+            ("CXR: Right lower lobe consolidation with air bronchograms. Bilateral perihilar", "body"),
+            ("haziness. No pleural effusion. No pneumothorax. Left lung clear.", "body"),
+            ("Pattern: right lower lobe pneumonia — cannot exclude concurrent PCP.", "body"),
+            ("", "gap"),
+            ("CT chest (with contrast):", "body"),
+            ("Right lower lobe dense consolidation — lobar pneumonia pattern.", "body"),
+            ("Bilateral ground-glass opacification predominantly perihilar and upper lobe —", "body"),
+            ("pattern consistent with concurrent Pneumocystis jirovecii pneumonia (PCP).", "body"),
+            ("Mediastinal lymphadenopathy (largest node 1.8 x 1.4 cm) — reactive vs. lymphoma.", "body"),
+            ("No pleural effusion. No cavitation. No empyema.", "body"),
+            ("", "gap"),
+            ("ASSESSMENT", "section"),
+            ("", "gap"),
+            ("Severe community-acquired pneumonia — Pneumococcus confirmed (urinary antigen +ve).", "body"),
+            ("Concurrent PCP — clinically suspected (CD4 88, LDH 612, bilateral GGO on CT).", "body"),
+            ("HIV infection — advanced (CD4 88 cells/uL), not yet on ART.", "body"),
+            ("Sepsis — NEWS2 score 9, borderline haemodynamic compromise.", "body"),
+            ("Hyponatraemia (SIADH pattern) — Na 129 mmol/L.", "body"),
+            ("Hypokalaemia — K 3.3 mmol/L.", "body"),
+            ("", "gap"),
+            ("PLAN", "section"),
+            ("", "gap"),
+            ("1. Admit to Infectious Diseases ward — isolation room, droplet precautions.", "body"),
+            ("2. IV Co-Amoxiclav 1.2g 8-hourly + Azithromycin 500mg once daily (CAP).", "body"),
+            ("3. IV Clindamycin 600mg 8-hourly + Primaquine 30mg once daily for PCP", "body"),
+            ("   (TMP-SMX allergy — alternative regimen). Continue until BAL confirms/excludes.", "body"),
+            ("4. High-flow oxygen — maintain SpO2 > 92%. ICU escalation if SpO2 < 90%.", "body"),
+            ("5. IV fluid resuscitation — Hartmann's 500mL bolus now, then reassess.", "body"),
+            ("6. IV Potassium replacement — 40mmol KCl in 500mL over 4 hours.", "body"),
+            ("7. Fluid restriction 1.5L/day — manage SIADH (Na 129 mmol/L).", "body"),
+            ("8. ID consult — Dr. Priya Subramaniam to review ART initiation timing.", "body"),
+            ("9. Bronchoscopy + BAL — 28 June 2026. Zainab Adeyemi (sister) to be consented.", "body"),
+            ("10. Social work referral — housing, support, HIV disclosure counselling.", "body"),
+            ("11. Notify public health — HIV case notification (statutory requirement).", "body"),
+            ("12. Patient ID wristband: 9920384.", "body"),
+            ("", "gap"),
+            ("Signed:           Dr. Aisha Kamara, ID Registrar", "body"),
+            ("Date:             27 June 2026", "body"),
+            ("Facility Contact: Northwestern Memorial Hospital, 251 E Huron St, Chicago IL 60611", "body"),
+        ]
+    }
+]
+
+
+def build_pdf(patient: dict) -> str:
+    filepath = os.path.join(OUTPUT_DIR, patient["filename"])
+    c = canvas.Canvas(filepath, pagesize=A4)
+
+    def new_page():
+        c.showPage()
+        return H - MARGIN
+
+    y = H - MARGIN
+
+    for text, style in patient["lines"]:
+        # Page break check
+        if y < MARGIN + LINE_H * 2:
+            y = new_page()
+
+        if style == "gap":
+            y -= LINE_H * 0.6
+            continue
+
+        if style == "header":
+            c.setFont("Courier-Bold", FONT_HEADER)
+            c.drawString(MARGIN, y, text)
+            y -= LINE_H * 1.4
+            # Underline
+            c.setLineWidth(0.5)
+            c.line(MARGIN, y + LINE_H * 0.6, W - MARGIN, y + LINE_H * 0.6)
+            y -= LINE_H * 0.4
+        elif style == "section":
+            c.setFont("Courier-Bold", FONT_SECTION)
+            c.drawString(MARGIN, y, text)
+            y -= LINE_H
+        else:
+            c.setFont("Courier", FONT_BODY)
+            c.drawString(MARGIN, y, text)
+            y -= LINE_H
+
+    c.save()
+    return filepath
+
+
+for patient in PATIENTS:
+    path = build_pdf(patient)
+    print(f"Created: {path}")
+
+print("\nAll 3 PDFs generated in samples/")

@@ -1,0 +1,68 @@
+CLINICAL NOTE — FICTITIOUS PATIENT DATA (FOR TESTING ONLY)
+
+Patient: Elena Vasquez-Torres
+Date of Birth: 09/02/1985
+MRN: 00412867
+SSN: 445-88-7723
+Address: 33 Palm Court, Miami, FL 33101
+Phone: (305) 555-0562
+Email: evasquez85@miamihealth.net
+Referring Physician: Dr. Nathaniel Brooks, NPI 6677889900
+Facility: Miami Neurological Institute, 1200 NW 17th Ave, Miami FL
+
+Visit Date: 25 June 2026
+Reason for Visit: First unprovoked tonic-clonic seizure, post-ictal confusion.
+
+History of Present Illness:
+Elena Vasquez-Torres is a 41-year-old female brought in by ambulance after a witnessed
+3-minute tonic-clonic seizure at her workplace. She has no prior seizure history. Her colleague
+reported she was confused for approximately 20 minutes post-ictally. She denies recent illness,
+sleep deprivation, or alcohol use. Her brother Carlos Vasquez (contact: 305-555-0563) arrived
+at the ED.
+
+Past Medical History:
+- Migraine with aura (diagnosed 2015)
+- Anxiety disorder
+
+Current Medications:
+- Sumatriptan 50mg PRN for migraine
+- Sertraline 50mg daily
+
+Allergies: Carbamazepine (Stevens-Johnson syndrome)
+
+Vital Signs:
+- BP: 128/80 mmHg
+- HR: 96 bpm
+- RR: 16 breaths/min
+- SpO2: 99% on room air
+- Temperature: 36.7°C
+- Weight: 62 kg, Height: 166 cm
+
+Labs:
+- Sodium: 138 mmol/L
+- Glucose: 5.1 mmol/L
+- Calcium: 2.35 mmol/L
+- Full Blood Count: Normal
+- Prolactin: 820 mIU/L (elevated post-ictal, confirms seizure)
+
+Imaging:
+- CT head (non-contrast): No acute intracranial abnormality.
+- MRI brain ordered.
+
+EEG: Pending.
+
+Assessment:
+First unprovoked seizure, cause unknown (cryptogenic). MRI and EEG pending.
+
+Plan:
+1. Observe for 24 hours.
+2. MRI brain with gadolinium contrast.
+3. EEG within 48 hours.
+4. Neurology consult — Dr. Fatima Al-Rashid (pager 5512).
+5. Counsel patient on driving restrictions per state law.
+6. Levetiracetam 500mg BD commenced (avoid carbamazepine — allergy).
+7. Patient ID wristband: 00412867.
+
+Signed: Dr. Nathaniel Brooks, MD
+Date: 25/06/2026
+Facility Contact: 305-555-4400

@@ -1,0 +1,146 @@
+CLINICAL NOTE — FICTITIOUS PATIENT DATA (FOR TESTING ONLY)
+============================================================
+
+Patient:          Wei-Lin Huang
+Date of Birth:    03 September 1948
+MRN:              4481920
+SSN:              512-63-9047
+Address:          88 Jade Garden Court, San Francisco, CA 94108
+Phone:            (415) 667-3921
+Email:            weilin.huang48@gmail.com
+Referring Physician: Dr. Mei-Xing Loh, NPI 6612039485
+Facility:         UCSF Medical Center, San Francisco
+
+Visit Date:       14 June 2026
+Reason for Visit: Palpitations and progressive exertional dyspnoea — known atrial fibrillation, query decompensated heart failure.
+
+------------------------------------------------------------
+HISTORY OF PRESENT ILLNESS
+------------------------------------------------------------
+
+Wei-Lin Huang is a 77-year-old male, originally from Guangzhou, China, with a
+background of permanent atrial fibrillation and ischaemic cardiomyopathy presenting
+with a 10-day history of worsening dyspnoea on exertion (now limiting to < 50 metres),
+bilateral ankle oedema, and two episodes of nocturnal orthopnoea. He denies chest pain
+or syncope. His son Kevin Huang (contact: 415-883-2047) is his primary carer and was
+present at consultation. His wife Mei-Fang Huang (home: 415-667-3921) has limited
+English — Kevin acts as interpreter. GP referral from Dr. Mei-Xing Loh (clinic:
+415-220-8844).
+
+------------------------------------------------------------
+PAST MEDICAL HISTORY
+------------------------------------------------------------
+
+- Permanent atrial fibrillation (diagnosed 2014, on anticoagulation)
+- Ischaemic cardiomyopathy (EF 35%, last echo 2024)
+- Hypertension (diagnosed 2003)
+- Type 2 diabetes mellitus (HbA1c 7.9% at last review, February 2026)
+- CKD Stage 3a (eGFR 52 mL/min/1.73m²)
+- Prior NSTEMI (2019, medically managed — no PCI)
+- OSA (on CPAP since 2021)
+
+------------------------------------------------------------
+CURRENT MEDICATIONS
+------------------------------------------------------------
+
+- Apixaban 5mg twice daily (anticoagulation for AF)
+- Bisoprolol 5mg once daily (rate control)
+- Furosemide 40mg once daily (diuretic)
+- Sacubitril/Valsartan 97/103mg twice daily (HFrEF)
+- Spironolactone 25mg once daily
+- Empagliflozin 10mg once daily
+- Atorvastatin 40mg once daily
+- Metformin 500mg twice daily
+
+------------------------------------------------------------
+ALLERGIES
+------------------------------------------------------------
+
+Ramipril (dry cough — intolerable), Sulfonamides (rash)
+
+------------------------------------------------------------
+VITAL SIGNS
+------------------------------------------------------------
+
+BP:           158/96 mmHg (right arm, seated)
+HR:           88 bpm (irregularly irregular)
+RR:           22 breaths/min
+SpO2:         91% on room air → 95% on 2L nasal cannula
+Temperature:  36.8°C
+Weight:       74 kg (up 6 kg from baseline 68 kg — 10 days)
+Height:       168 cm
+BMI:          26.2 kg/m²
+JVP:          Elevated 5 cm above sternal angle
+
+------------------------------------------------------------
+LABS
+------------------------------------------------------------
+
+Hb:           118 g/L (mild normocytic anaemia)
+WBC:          9.4 × 10⁹/L
+Platelets:    214 × 10⁹/L
+BNP:          1,842 pg/mL (markedly elevated — consistent with decompensation)
+Troponin I:   0.08 µg/L (mildly elevated — chronic elevation pattern)
+Creatinine:   148 µmol/L (elevated, up from baseline 112 µmol/L)
+eGFR:         38 mL/min/1.73m² (acutely worsened — cardiorenal syndrome)
+Na:           133 mmol/L (dilutional hyponatraemia)
+K:            4.9 mmol/L
+Albumin:      31 g/L (mildly reduced)
+HbA1c:        8.3% (suboptimal)
+INR:          Not applicable (on APIXABAN, not warfarin)
+LFTs:         ALT 68 U/L, AST 74 U/L (mildly elevated — hepatic congestion)
+
+------------------------------------------------------------
+ECG
+------------------------------------------------------------
+
+Atrial fibrillation with controlled ventricular rate (~88 bpm).
+Left bundle branch block pattern (pre-existing — confirmed on 2023 ECG).
+No new ischaemic changes.
+
+------------------------------------------------------------
+IMAGING
+------------------------------------------------------------
+
+CXR: Cardiomegaly. Bilateral perihilar haziness. Upper lobe venous diversion.
+     Bilateral small pleural effusions. Kerley B lines visible at right base.
+     Findings consistent with acute pulmonary oedema.
+
+Echocardiogram (today): EF 28% (worsened from 35% in 2024). Severe LV dilation.
+     Global hypokinesis. Grade III diastolic dysfunction. Moderate mitral
+     regurgitation. Estimated RVSP 48 mmHg (elevated). Small pericardial effusion.
+
+------------------------------------------------------------
+ASSESSMENT
+------------------------------------------------------------
+
+Decompensated heart failure (HFrEF, EF 28%) — acute-on-chronic exacerbation.
+Atrial fibrillation — permanent, rate controlled.
+Cardiorenal syndrome type 1 — acute AKI in context of cardiac decompensation.
+Dilutional hyponatraemia — secondary to fluid overload.
+Suboptimal glycaemic control — HbA1c 8.3%.
+Hepatic congestion — mildly elevated transaminases.
+
+------------------------------------------------------------
+PLAN
+------------------------------------------------------------
+
+1. Admit to Cardiology ward — HDU monitoring (telemetry, strict fluid balance).
+2. IV Furosemide 80mg bolus then 10mg/hr infusion — target 1–1.5L negative fluid
+   balance per day. Monitor creatinine and electrolytes 12-hourly.
+3. Continue Sacubitril/Valsartan — do NOT uptitrate until euvolaemic.
+4. Continue Apixaban — no dose change (renal dosing already applied).
+5. Hold Empagliflozin during acute admission (risk of euglycaemic DKA).
+6. Hold Metformin — creatinine elevated, eGFR < 45.
+7. Repeat echo in 48 hours post-diuresis to reassess EF and effusions.
+8. Cardiology consult — Dr. Mei-Xing Loh to review in morning round.
+9. Dietitian input — sodium and fluid restriction 1.5L/day.
+10. Discharge planning: Kevin Huang to be counselled on daily weight monitoring
+    and escalation plan. Home nursing follow-up at 88 Jade Garden Court.
+11. Patient ID wristband: 4481920.
+
+------------------------------------------------------------
+
+Signed:           Dr. Rachel Okonkwo, Registrar Cardiology
+Date:             14 June 2026
+Facility Contact: UCSF Medical Center, 505 Parnassus Ave, San Francisco CA 94143

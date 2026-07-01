@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: corti-agent-api
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: node dist/api.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: API_PORT
+        value: "3457"
+      - key: CORTI_API_KEY
+        sync: false
+      - key: CORTI_AGENT_ID
+        sync: false
+    disk:
+      name: output-storage
+      mountPath: /app/output
+      sizeGB: 1

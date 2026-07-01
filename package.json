@@ -11,24 +11,31 @@
     "reidentify": "npx ts-node src/reidentify.ts",
     "zk:prove": "npx ts-node src/zkRunner.ts",
     "run": "npx ts-node src/orchestrator.ts",
-    "mcp": "npx ts-node src/mcpServer.ts"
+    "mcp": "npx ts-node src/mcpServer.ts",
+    "start": "concurrently --names \"SERVER,NGROK\" --prefix-colors \"cyan,yellow\" \"npx ts-node src/mcpServer.ts\" \"ngrok http 3456\""
   },
   "dependencies": {
     "@corti/sdk": "^3.1.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@types/express": "^5.0.6",
+    "archiver": "^8.0.0",
     "circomlib": "^2.0.5",
     "compromise": "^14.15.1",
     "dotenv": "^16.4.5",
     "express": "^5.2.1",
     "mammoth": "^1.8.0",
+    "multer": "^2.2.0",
     "node-fetch": "^3.3.2",
+    "p-limit": "^7.3.0",
     "pdf-parse": "^1.1.1",
     "snarkjs": "^0.7.5"
   },
   "devDependencies": {
+    "@types/archiver": "^8.0.0",
+    "@types/multer": "^2.1.0",
     "@types/node": "^20.17.0",
     "@types/pdf-parse": "^1.1.4",
+    "concurrently": "^10.0.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }

@@ -1,0 +1,64 @@
+CLINICAL NOTE — FICTITIOUS PATIENT DATA (FOR TESTING ONLY)
+
+Patient: Sarah Jane Collins
+Date of Birth: 22/07/1965
+MRN: 00731482
+SSN: 512-33-8901
+Address: 18 Birchwood Lane, Austin, TX 78701
+Phone: (512) 555-0247
+Email: sjcollins1965@healthmail.com
+Referring Physician: Dr. Marcus Patel, NPI 9876543210
+Facility: Austin Regional Medical Center, 400 W. 15th St, Austin TX
+
+Visit Date: 15 June 2026
+Reason for Visit: Acute exacerbation of COPD, worsening dyspnea over 4 days.
+
+History of Present Illness:
+Sarah Collins is a 60-year-old female with a 35-year smoking history presenting with severe
+dyspnea, productive cough with yellow-green sputum, and wheezing. She reports using her
+rescue inhaler 8 times per day. Her husband David Collins (contact: 512-555-0248) brought
+her in. No chest pain. No haemoptysis.
+
+Past Medical History:
+- COPD (GOLD Stage III, diagnosed 2018)
+- Chronic bronchitis
+- Hypertension (diagnosed 2020)
+
+Current Medications:
+- Tiotropium 18mcg inhaled daily
+- Budesonide/Formoterol 160/4.5mcg inhaled twice daily
+- Salbutamol 100mcg inhaled as needed
+- Amlodipine 5mg daily
+
+Allergies: Aspirin (bronchospasm)
+
+Vital Signs:
+- BP: 152/88 mmHg
+- HR: 104 bpm
+- RR: 26 breaths/min
+- SpO2: 88% on room air
+- Temperature: 38.2°C
+- Weight: 68 kg, Height: 162 cm
+
+Labs:
+- ABG: pH 7.32, PaCO2 58 mmHg, PaO2 52 mmHg
+- WBC: 14.2 x10⁹/L (elevated)
+- CRP: 87 mg/L (elevated)
+
+Chest X-Ray: Hyperinflated lungs, no consolidation.
+
+Assessment:
+Acute exacerbation of severe COPD with type 2 respiratory failure. Probable infective trigger.
+
+Plan:
+1. Supplemental O2 to maintain SpO2 88-92%.
+2. Nebulised salbutamol and ipratropium every 4 hours.
+3. IV methylprednisolone 40mg daily x 5 days.
+4. Amoxicillin-clavulanate 875mg BD for 7 days.
+5. Respiratory consult — Dr. Linda Torres (pager 7823).
+6. Consider NIV if no improvement in 2 hours.
+7. Patient ID wristband: 00731482.
+
+Signed: Dr. Marcus Patel, MD
+Date: 15/06/2026
+Facility Contact: 512-555-8100

@@ -1,0 +1,55 @@
+{
+  "corti": {
+    "agentName": "phi-deidentifier",
+    "agentDescription": "Clinical facts extraction agent — extracts structured clinical facts from anonymized records",
+    "agentStateFile": ".agent-state.json",
+    "reuseAgent": true,
+    "experts": [
+      { "type": "reference", "name": "memory-expert" }
+    ]
+  },
+
+  "deidentification": {
+    "standard": "hipaa-safe-harbor",
+    "phiCategories": [
+      "PATIENT_NAME",
+      "PROVIDER_NAME",
+      "FACILITY_NAME",
+      "DOB",
+      "DATE",
+      "AGE",
+      "SSN",
+      "MRN",
+      "ACCOUNT_NUMBER",
+      "ADDRESS",
+      "ZIP",
+      "PHONE",
+      "FAX",
+      "EMAIL",
+      "IP_ADDRESS",
+      "DEVICE_ID",
+      "URL"
+    ],
+    "placeholderFormat": "<<{CODENAME}>>",
+    "codenameWordlist": ["NOVA", "ZEPHYR", "TITAN", "PULSAR", "VEGA", "LYRA", "ORION", "QUASAR", "NEBULA", "PHANTOM", "CIPHER", "NEXUS", "AXIOM", "ZENITH", "VECTOR"],
+    "secondPassRegex": true,
+    "chunkSize": 3000,
+    "chunkOverlap": 200
+  },
+
+  "document": {
+    "supportedFormats": ["pdf", "docx", "txt"]
+  },
+
+  "output": {
+    "directory": "./output",
+    "encryptPhiMap": true,
+    "encryptionAlgorithm": "aes-256-gcm"
+  },
+
+  "zk": {
+    "circuitPath": "./src/circuits/patient.circom",
+    "buildDir": "./src/circuits/build",
+    "provingSystem": "groth16"
+  }
+}

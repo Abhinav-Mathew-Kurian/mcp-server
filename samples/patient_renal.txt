@@ -1,0 +1,65 @@
+CLINICAL NOTE — FICTITIOUS PATIENT DATA (FOR TESTING ONLY)
+
+Patient: Amara Osei-Bonsu
+Date of Birth: 14/05/1972
+MRN: 00583921
+SSN: 234-77-6612
+Address: 7 Riverside Close, Chicago, IL 60601
+Phone: (312) 555-0874
+Email: amara.osei@chicagonet.com
+Referring Physician: Dr. Hannah Webb, NPI 5544332211
+Facility: Chicago Metropolitan Hospital, 1 S. Michigan Ave, Chicago IL
+
+Visit Date: 12 June 2026
+Reason for Visit: Acute kidney injury on background of CKD stage 3.
+
+History of Present Illness:
+Amara Osei-Bonsu is a 54-year-old female with known CKD stage 3 (baseline creatinine 140
+µmol/L) presenting with 3-day history of reduced urine output, nausea, and peripheral oedema.
+She was started on ibuprofen for knee pain 5 days ago by her GP. Her partner James Osei
+(contact: 312-555-0875) is present.
+
+Past Medical History:
+- CKD Stage 3 (diagnosed 2022-09-20)
+- Type 2 Diabetes Mellitus (HbA1c 7.1% on 2026-04-10)
+- Hypertension
+
+Current Medications:
+- Metformin 500mg BD (held today)
+- Amlodipine 10mg daily
+- Ramipril 5mg daily (held today)
+- Furosemide 40mg daily
+
+Allergies: Sulfonamides (rash)
+
+Vital Signs:
+- BP: 168/96 mmHg
+- HR: 92 bpm
+- RR: 18 breaths/min
+- SpO2: 96% on room air
+- Temperature: 36.9°C
+- Weight: 78 kg (up 4kg from 2 weeks ago), Height: 163 cm
+
+Labs:
+- Creatinine: 312 µmol/L (baseline 140)
+- eGFR: 18 mL/min/1.73m² (baseline 42)
+- Potassium: 5.8 mmol/L (elevated)
+- Urea: 22 mmol/L
+- HbA1c: 7.1%
+- Urine dipstick: 2+ protein, 1+ blood
+
+Assessment:
+Acute kidney injury (AKIN Stage 2) on CKD, likely NSAID-induced. Hyperkalaemia.
+
+Plan:
+1. Urgent IV fluid resuscitation — 500ml normal saline bolus.
+2. Stop NSAIDs, hold Metformin and Ramipril.
+3. Calcium gluconate 10ml 10% IV for hyperkalaemia.
+4. Salbutamol nebuliser 5mg for K+ shift.
+5. Nephrology consult — Dr. Samuel Park (pager 3319).
+6. Renal ultrasound to exclude obstruction.
+7. Patient ID wristband: 00583921.
+
+Signed: Dr. Hannah Webb, MD
+Date: 12/06/2026
+Facility Contact: 312-555-6700
