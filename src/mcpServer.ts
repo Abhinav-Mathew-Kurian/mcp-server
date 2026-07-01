@@ -18,7 +18,7 @@ import { loadConfig } from './config';
 import { runBatch, BatchResult } from './batchProcessor';
 import { parseFileToText } from './fileParser';
 
-const PORT = parseInt(process.env.MCP_PORT ?? '3456', 10);
+const PORT = parseInt(process.env.PORT ?? process.env.MCP_PORT ?? '3456', 10);
 
 // ── In-memory job store ───────────────────────────────────────────────────────
 const jobs = new Map<string, { status: 'running' | 'done' | 'failed'; result?: BatchResult; error?: string; startedAt: string }>();

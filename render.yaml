@@ -1,19 +1,23 @@
 services:
   - type: web
-    name: corti-agent-api
+    name: mcp-server
     runtime: node
+    region: singapore
+    plan: free
     buildCommand: npm install && npm run build
-    startCommand: node dist/api.js
+    startCommand: node dist/mcpServer.js
     envVars:
       - key: NODE_ENV
         value: production
-      - key: API_PORT
-        value: "3457"
-      - key: CORTI_API_KEY
+      - key: CORTI_CLIENT_ID
         sync: false
-      - key: CORTI_AGENT_ID
+      - key: CORTI_CLIENT_SECRET
         sync: false
-    disk:
-      name: output-storage
-      mountPath: /app/output
-      sizeGB: 1
+      - key: CORTI_TENANT_NAME
+        sync: false
+      - key: CORTI_ENVIRONMENT
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
